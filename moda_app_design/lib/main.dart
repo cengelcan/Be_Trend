@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moda_app_design/detail.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,16 +20,31 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   late int _counterForward = 0;
   late int _counterComment = 0;
   late int _counterLike = 0;
+
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    tabController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(" ★ Be Trend", style: TextStyle(color: Colors.black)),
+        title: Text(" ★ Be Trend ", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
@@ -72,6 +88,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(
                   width: 20,
                 ),
+                showProfiles("assets/model1.jpeg", "assets/dolce.png"),
+                SizedBox(
+                  width: 20,
+                ),
+                showProfiles("assets/model2.jpeg", "assets/versace.png"),
+                SizedBox(
+                  width: 20,
+                ),
+                showProfiles("assets/model3.jpeg", "assets/nike.png"),
+                SizedBox(
+                  width: 20,
+                )
               ],
             ),
           ),
@@ -80,21 +108,48 @@ class _MyHomePageState extends State<MyHomePage> {
           sharedItems(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.assistant_photo),
-            label: 'Event',
-          ),
-        ],
+      bottomNavigationBar: Material(
+        color: Colors.white,
+        child: TabBar(
+          controller: tabController,
+          indicatorColor: Colors.orange,
+          tabs: [
+            Tab(
+              icon: Icon(
+                Icons.home,
+                color: Colors.black54,
+                size: 20,
+              ),
+              child: Text(
+                "Home",
+                style: TextStyle(
+                  color: Colors.orange.shade400,
+                ),
+              ),
+            ),
+            Tab(
+              icon: Icon(Icons.more, color: Colors.black54, size: 20),
+              child: Text(
+                "More",
+                style: TextStyle(color: Colors.orange.shade400),
+              ),
+            ),
+            Tab(
+              icon: Icon(Icons.flag, color: Colors.black54, size: 20),
+              child: Text(
+                "Events",
+                style: TextStyle(color: Colors.orange.shade400),
+              ),
+            ),
+            Tab(
+              icon: Icon(Icons.person, color: Colors.black54, size: 20),
+              child: Text(
+                "Profile",
+                style: TextStyle(color: Colors.orange.shade400),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -164,14 +219,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(height: 20),
                 Row(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2.3,
-                      height: 210,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        image: DecorationImage(
-                            image: AssetImage("assets/modelgrid1.jpeg"),
-                            fit: BoxFit.cover),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => Detail(
+                                  imgPath: "assets/modelgrid1.jpeg",
+                                )));
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 2.3,
+                        height: 210,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: DecorationImage(
+                              image: AssetImage("assets/modelgrid1.jpeg"),
+                              fit: BoxFit.cover),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -181,7 +244,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         Container(
                           height: 100,
-                          width: (MediaQuery.of(context).size.width - 100) / 2,
+                          width:
+                              (MediaQuery.of(context).size.width - 100) / 2,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             image: DecorationImage(
@@ -194,7 +258,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         Container(
                           height: 100,
-                          width: (MediaQuery.of(context).size.width - 100) / 2,
+                          width:
+                              (MediaQuery.of(context).size.width - 100) / 2,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             image: DecorationImage(
